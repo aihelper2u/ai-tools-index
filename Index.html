@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Index — A Field Catalog of AI Tools</title>
+<meta name="description" content="A hand-curated catalog of the world's artificial intelligence tools, organized like a library index.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗂️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.1/tailwind.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: '#10151d',
+          ink2: '#1a2230',
+          ink3: '#232c3d',
+          paper: '#f1ece0',
+          paperdim: '#e3dcc8',
+          brass: '#c9a15a',
+          brassdim: '#8a6f3f',
+          stamp: '#a5432f',
+        },
+        fontFamily: {
+          slab: ['"Zilla Slab"', 'serif'],
+          mono: ['"IBM Plex Mono"', 'monospace'],
+          sans: ['"Inter"', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #10151d; }
+  .card-perf {
+    background-image: radial-gradient(circle, #10151d 2.5px, transparent 2.6px);
+    background-size: 14px 14px;
+    background-position: 6px 0;
+  }
+  .drawer-underline {
+    background-image: repeating-linear-gradient(90deg, #c9a15a 0 6px, transparent 6px 12px);
+    height: 2px;
+  }
+  ::selection { background: #c9a15a; color: #10151d; }
+  .catalog-card { transition: transform .18s ease, box-shadow .18s ease; }
+  .catalog-card:hover { transform: translateY(-4px) rotate(-0.15deg); box-shadow: 0 18px 30px -12px rgba(0,0,0,.55); }
+  .chip { transition: all .15s ease; }
+  input:focus { outline: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .catalog-card:hover { transform: none; }
+  }
+  .scrollbar-thin::-webkit-scrollbar { height: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #c9a15a; border-radius: 3px; }
+</style>
+</head>
+<body class="font-sans text-paper antialiased">
+
+<!-- ================= HEADER ================= -->
+<header class="sticky top-0 z-40 bg-ink/95 backdrop-blur border-b border-brassdim/40">
+  <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <span class="font-mono text-brass text-sm border border-brassdim px-1.5 py-0.5 rounded-sm">AI</span>
+      <span class="font-slab font-semibold text-xl tracking-tight">The Index</span>
+    </div>
+    <nav class="hidden sm:flex items-center gap-6 font-mono text-xs uppercase tracking-widest text-paper/60">
+      <a href="#catalog" class="hover:text-brass transition-colors">Catalog</a>
+      <a href="#about" class="hover:text-brass transition-colors">About</a>
+      <span id="live-count" class="text-brass/80">— entries</span>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="max-w-6xl mx-auto px-5 pt-14 pb-10">
+  <p class="font-mono text-xs uppercase tracking-[0.25em] text-brass mb-4">Vol. I — Artificial Intelligence, Sorted</p>
+  <h1 class="font-slab font-semibold text-4xl sm:text-6xl leading-[1.05] max-w-3xl">
+    A field catalog of every kind of AI tool, filed for finding.
+  </h1>
+  <p class="mt-5 max-w-xl text-paper/70 leading-relaxed">
+    No rankings, no ads, no noise — just tools, sorted the way a librarian would sort them: by what they're actually for.
+    Pull a drawer, or search the catalog directly.
+  </p>
+
+  <!-- search styled as a drawer label -->
+  <div class="mt-9 max-w-xl">
+    <label for="search" class="block font-mono text-[11px] uppercase tracking-widest text-brass/80 mb-2">Search the catalog</label>
+    <div class="relative">
+      <input id="search" type="text" placeholder="Try “video”, “code”, “voice”, “research”…"
+        class="w-full bg-paper text-ink font-mono text-sm placeholder-ink/40 rounded-sm px-4 py-3.5 pr-11 shadow-[0_10px_0_-4px_#8a6f3f] focus:shadow-[0_6px_0_-2px_#8a6f3f] transition-shadow">
+      <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/50" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CATEGORY DRAWER LABELS ================= -->
+<section class="max-w-6xl mx-auto px-5 pb-2">
+  <div id="chips" class="flex gap-2 overflow-x-auto scrollbar-thin pb-3"></div>
+  <div class="drawer-underline w-full opacity-60"></div>
+</section>
+
+<!-- ================= CATALOG GRID ================= -->
+<main id="catalog" class="max-w-6xl mx-auto px-5 py-10">
+  <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  <p id="empty" class="hidden text-center text-paper/50 font-mono text-sm py-16">No cards in this drawer. Try another search.</p>
+</main>
+
+<!-- ================= ABOUT / FOOTER ================= -->
+<section id="about" class="max-w-6xl mx-auto px-5 py-14 border-t border-brassdim/30">
+  <div class="grid sm:grid-cols-3 gap-8">
+    <div class="sm:col-span-2">
+      <h2 class="font-slab text-2xl font-semibold mb-3">About this catalog</h2>
+      <p class="text-paper/70 leading-relaxed max-w-xl">
+        The Index is a manually maintained directory — every tool is reviewed before it's filed, and dead links get pulled, not left to rot.
+        Entries are added as the field moves; this is Volume I.
+      </p>
+    </div>
+    <div>
+      <h3 class="font-mono text-xs uppercase tracking-widest text-brass mb-3">Suggest an entry</h3>
+      <p class="text-paper/60 text-sm leading-relaxed">Know a tool that belongs here? Send it in — see the contact note in the site footer once deployed.</p>
+    </div>
+  </div>
+  <p class="mt-12 font-mono text-[11px] text-paper/40">© <span id="year"></span> The Index. Built as a static catalog, filed nightly.</p>
+</section>
+
+<script>
+  // ---------- DATA ----------
+  const TOOLS = [
+    {n:"ChatGPT", c:"Chat & Assistants", d:"General-purpose conversational assistant from OpenAI.", u:"https://chatgpt.com"},
+    {n:"Claude", c:"Chat & Assistants", d:"Anthropic's assistant, tuned for careful reasoning and long documents.", u:"https://claude.ai"},
+    {n:"Gemini", c:"Chat & Assistants", d:"Google's assistant, integrated across Search, Docs and Android.", u:"https://gemini.google.com"},
+    {n:"Perplexity", c:"Chat & Assistants", d:"Answer engine that cites sources for every claim.", u:"https://perplexity.ai"},
+    {n:"Microsoft Copilot", c:"Chat & Assistants", d:"Assistant woven through Windows and Microsoft 365.", u:"https://copilot.microsoft.com"},
+    {n:"Jasper", c:"Writing & Content", d:"Brand-voice copywriting for marketing teams.", u:"https://jasper.ai"},
+    {n:"Copy.ai", c:"Writing & Content", d:"Templated copy generation for ads, emails and blogs.", u:"https://copy.ai"},
+    {n:"Grammarly", c:"Writing & Content", d:"Grammar, tone and clarity editing as you type.", u:"https://grammarly.com"},
+    {n:"Notion AI", c:"Writing & Content", d:"Drafting and summarizing built directly into Notion docs.", u:"https://notion.so/product/ai"},
+    {n:"Midjourney", c:"Image Generation", d:"Painterly, high-craft image generation via prompt.", u:"https://midjourney.com"},
+    {n:"DALL·E 3", c:"Image Generation", d:"OpenAI's image model, built into ChatGPT.", u:"https://openai.com/dall-e-3"},
+    {n:"Stable Diffusion", c:"Image Generation", d:"Open-weight image model, self-hostable and widely forked.", u:"https://stability.ai"},
+    {n:"Adobe Firefly", c:"Image Generation", d:"Image generation trained for commercial-safe use, in Creative Cloud.", u:"https://firefly.adobe.com"},
+    {n:"Ideogram", c:"Image Generation", d:"Image generation with a strong hand for readable text.", u:"https://ideogram.ai"},
+    {n:"Runway", c:"Video", d:"Text-to-video and editing tools built for filmmakers.", u:"https://runwayml.com"},
+    {n:"Pika", c:"Video", d:"Fast, casual text-to-video generation.", u:"https://pika.art"},
+    {n:"Synthesia", c:"Video", d:"AI avatars that turn scripts into presenter-led video.", u:"https://synthesia.io"},
+    {n:"HeyGen", c:"Video", d:"Avatar video generation with multilingual dubbing.", u:"https://heygen.com"},
+    {n:"ElevenLabs", c:"Audio & Voice", d:"Realistic voice generation and dubbing.", u:"https://elevenlabs.io"},
+    {n:"Suno", c:"Audio & Voice", d:"Full songs — vocals and instrumentation — from a text prompt.", u:"https://suno.com"},
+    {n:"Udio", c:"Audio & Voice", d:"Music generation focused on genre and structure control.", u:"https://udio.com"},
+    {n:"Descript", c:"Audio & Voice", d:"Edit audio and video by editing a text transcript.", u:"https://descript.com"},
+    {n:"GitHub Copilot", c:"Code & Dev", d:"In-editor code completion and chat, built into most IDEs.", u:"https://github.com/features/copilot"},
+    {n:"Cursor", c:"Code & Dev", d:"A code editor built around an AI pair-programmer.", u:"https://cursor.com"},
+    {n:"Claude Code", c:"Code & Dev", d:"Agentic coding from the command line, delegating whole tasks.", u:"https://claude.com/product/claude-code"},
+    {n:"Replit AI", c:"Code & Dev", d:"Browser-based coding with an AI agent that builds and deploys.", u:"https://replit.com"},
+    {n:"Canva AI (Magic Studio)", c:"Design", d:"AI design tools layered into Canva's editor.", u:"https://canva.com/magic-studio"},
+    {n:"Figma AI", c:"Design", d:"AI assistance for layout, copy and asset generation in Figma.", u:"https://figma.com"},
+    {n:"Framer AI", c:"Design", d:"Generates full, publishable websites from a prompt.", u:"https://framer.com/ai"},
+    {n:"Zapier AI", c:"Productivity & Agents", d:"Natural-language automation across thousands of apps.", u:"https://zapier.com/ai"},
+    {n:"Motion", c:"Productivity & Agents", d:"AI calendar planning that auto-schedules your task list.", u:"https://usemotion.com"},
+    {n:"Otter.ai", c:"Productivity & Agents", d:"Live meeting transcription with automatic summaries.", u:"https://otter.ai"},
+    {n:"Elicit", c:"Research & Data", d:"Searches and summarizes academic papers by question.", u:"https://elicit.com"},
+    {n:"Julius AI", c:"Research & Data", d:"Chat-based data analysis over spreadsheets and CSVs.", u:"https://julius.ai"},
+    {n:"ChatPDF", c:"Research & Data", d:"Ask questions directly against an uploaded PDF.", u:"https://chatpdf.com"},
+  ];
+
+  const CATS = [...new Set(TOOLS.map(t => t.c))];
+  let activeCat = "All";
+  let query = "";
+
+  // ---------- CHIPS ----------
+  const chipsEl = document.getElementById('chips');
+  function renderChips(){
+    const cats = ["All", ...CATS];
+    chipsEl.innerHTML = cats.map(c => `
+      <button data-cat="${c}" class="chip whitespace-nowrap font-mono text-xs uppercase tracking-wider px-3.5 py-2 rounded-sm border
+        ${c === activeCat ? 'bg-brass text-ink border-brass' : 'bg-transparent text-paper/70 border-brassdim/50 hover:border-brass hover:text-brass'}">
+        ${c}
+      </button>`).join('');
+    chipsEl.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      activeCat = b.dataset.cat; renderChips(); renderGrid();
+    }));
+  }
+
+  // ---------- GRID ----------
+  const gridEl = document.getElementById('grid');
+  const emptyEl = document.getElementById('empty');
+  const countEl = document.getElementById('live-count');
+
+  function catCode(cat){
+    const idx = CATS.indexOf(cat) + 1;
+    return "0" + idx;
+  }
+
+  function renderGrid(){
+    const q = query.trim().toLowerCase();
+    const filtered = TOOLS.filter(t => {
+      const matchesCat = activeCat === "All" || t.c === activeCat;
+      const matchesQ = !q || (t.n + t.d + t.c).toLowerCase().includes(q);
+      return matchesCat && matchesQ;
+    });
+
+    countEl.textContent = `${filtered.length} entries`;
+
+    if(filtered.length === 0){
+      gridEl.innerHTML = ""; emptyEl.classList.remove('hidden'); return;
+    }
+    emptyEl.classList.add('hidden');
+
+    gridEl.innerHTML = filtered.map((t, i) => `
+      <a href="${t.u}" target="_blank" rel="noopener noreferrer"
+        class="catalog-card card-perf group block bg-paper text-ink rounded-sm p-5 pt-3 border-t-[3px] border-stamp/0 hover:border-stamp/70">
+        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-ink/40 mb-3">
+          <span>AI · ${catCode(t.c)}.${String(i+1).padStart(2,'0')}</span>
+          <span class="text-stamp/70">${t.c}</span>
+        </div>
+        <h3 class="font-slab font-semibold text-lg leading-snug mb-1.5 group-hover:text-stamp transition-colors">${t.n}</h3>
+        <p class="text-sm text-ink/70 leading-relaxed">${t.d}</p>
+        <div class="mt-4 font-mono text-[11px] text-ink/40 flex items-center gap-1">
+          visit site <span class="group-hover:translate-x-0.5 transition-transform inline-block">→</span>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  document.getElementById('search').addEventListener('input', e => { query = e.target.value; renderGrid(); });
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  renderChips();
+  renderGrid();
+</script>
+</body>
+</html>
